@@ -547,28 +547,30 @@ def write_data(temp, hum, dust, mdust):
 
 #센서에서 값을 일겅온 후 메인 화면에 표시되는 각 수치를 업데이트
 def update_data():
-    while True:
+    while True: #센서에서 값을 읽을 때 오류가 발생하는 경우가 있으므로 정상적으로 읽을 때까지 반복
         try:
-            humidity_data = mydht.humidity
-            temperature_data = mydht.temperature
+            humidity_data = mydht.humidity #습도
+            temperature_data = mydht.temperature #온도
             dust_data = 0
             mdust_data = 0
             buffer = ser.read(1024)
             
-            if (dust.protocol_chk(buffer)):
+            if (dust.protocol_chk(buffer)): #데이터가 유효한지 검사
                 data = dust.unpack_data(buffer)
                 
-                dust_data = data[dust.DUST_PM10_0_ATM]
-                mdust_data = data[dust.DUST_PM2_5_ATM]
-                dust_info = getDustInfo(dust_data)
+                dust_data = data[dust.DUST_PM10_0_ATM] #미세먼지
+                mdust_data = data[dust.DUST_PM2_5_ATM] #초미세먼지
+                dust_info = getDustInfo(dust_data) #화면에 표시하는데 필요한 정보를 불러옴
                 mdust_info = getMdustInfo(mdust_data)
             else:
                 print ('data read Err')
-            
+
+            #각 수치가 지정된 정상 범위를 벗어났는지 검사
             alert_state = getAlert(temperature_data, humidity_data, dust_data, mdust_data)
             alert_color = ['blue', 'black', 'red']
             alert_text = ['●', '', '●']
-            
+
+            #화면에 표시되는 텍스트 업데이트
             label_temp.configure(text = str(temperature_data) + '℃', fg= getTmpColor(temperature_data))
             label_hum.configure(text = str(humidity_data) + '%')
             label_dust.configure(text = str(dust_data) + '㎍/m³', fg= dust_info[1])
@@ -581,11 +583,11 @@ def update_data():
             label_dust_alert.configure(text = alert_text[alert_state[2]+1], fg= alert_color[alert_state[2]+1])
             label_mdust_alert.configure(text = alert_text[alert_state[3]+1], fg= alert_color[alert_state[3]+1])
             
-            label_temp.after(update_time* 1000, update_data)
-            write_data(temperature_data, humidity_data, dust_data, mdust_data)
+            label_temp.after(update_time* 1000, update_data) #1000ms 후에 이 함수를 다시 호출
+            write_data(temperature_data, humidity_data, dust_data, mdust_data) #파일에 데이터를 기록
             
             break
-        except:
+        except: #값을 읽을 때 오류가 발생하면 다시 시도
             continue
 
 
