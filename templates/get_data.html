@@ -1,0 +1,101 @@
+<head>
+    <meta http-equiv="Refresh" content="30">
+    <title>
+        실내공기정보
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="htts://fonts.googleapis.com/css2?
+    family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        *{
+            font-family: "Noto Sans KR", sans-serif;
+        }
+        
+        .titletext{
+            font-size: 50px;
+            font-weight: bold;
+        }
+        .content{
+            font-size: 35px;
+            border-bottom: 2px solid black;
+        }
+        .state{
+            font-size: 70px;
+            padding: 0px;
+        }
+        table{
+            border-collapse: collapse;
+            width: 800px;
+            height: 300px;
+        }
+        th, td{
+            text-align: center;   
+        }
+    </style>
+</head>
+<html>
+<p class="titletext" align= "center">실내공기정보</p>
+<hr>
+<table align="center">
+    <tr style="background-color:lightblue;">
+        <th class= "content" scope="col">온도</td>
+        <th class= "content" scope="col">습도</td>
+        <th class= "content" scope="col">미세먼지</td>
+        <th class= "content" scope="col">초미세먼지</td>
+    </tr>
+    <tr>
+        <td class= "content">{{temp}}℃</td>
+        <td class= "content">{{hum}}%</td>
+        {% if dust <= 30 %}
+        <td class= "content" style="color:blue;">
+        {% elif dust <= 80 %}
+        <td class= "content" style="color:green;">
+        {% elif dust<= 150 %}
+        <td class= "content" style="color:orange;">
+        {% else %}
+        <td class= "content" style="color:red;">
+        {% endif %}
+        {{dust}}㎍/㎥</td>
+        
+        {% if mdust <= 15 %}
+        <td class= "content" style="color:blue;">
+        {% elif mdust <= 35 %}
+        <td class= "content" style="color:green;">
+        {% elif mdust<= 75 %}
+        <td class= "content" style="color:orange;">
+        {% else %}
+        <td class= "content" style="color:red;">
+        {% endif %}
+        {{mdust}}㎍/㎥</td>
+    </tr>
+    <tr>
+        <td class= "content"></td>
+        <td class= "content"></td>
+        {% if dust <= 30 %}
+        <td class= "content" style="color:blue;">좋음</td>
+        {% elif dust <= 80 %}
+        <td class= "content" style="color:green;">보통</td>
+        {% elif dust<= 150 %}
+        <td class= "content" style="color:orange;">나쁨</td>
+        {% else %}
+        <td class= "content" style="color:red;">매우나쁨</td>
+        {% endif %}
+        
+        {% if mdust <= 15 %}
+        <td class= "content" style="color:blue;">좋음</td>
+        {% elif mdust <= 35 %}
+        <td class= "content" style="color:green;">보통</td>
+        {% elif mdust<= 75 %}
+        <td class= "content" style="color:orange;">나쁨</td>
+        {% else %}
+        <td class= "content" style="color:red;">매우나쁨</td>
+        {% endif %}
+    <tr>
+        <td class= "state" style="color:{{state[0][1]}};">{{state[0][0]}}</td>
+        <td class= "state" style="color:{{state[1][1]}};">{{state[1][0]}}</td>
+        <td class= "state" style="color:{{state[2][1]}};">{{state[2][0]}}</td>
+        <td class= "state" style="color:{{state[3][1]}};">{{state[3][0]}}</td>
+    </tr>
+</table>
+</html>
