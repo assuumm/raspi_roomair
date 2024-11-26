@@ -583,7 +583,7 @@ def update_data():
             label_dust_alert.configure(text = alert_text[alert_state[2]+1], fg= alert_color[alert_state[2]+1])
             label_mdust_alert.configure(text = alert_text[alert_state[3]+1], fg= alert_color[alert_state[3]+1])
             
-            label_temp.after(update_time* 1000, update_data) #1000ms 후에 이 함수를 다시 호출
+            label_temp.after(update_time* 1000, update_data) #30초 후에 이 함수를 다시 호출
             write_data(temperature_data, humidity_data, dust_data, mdust_data) #파일에 데이터를 기록
             
             break
